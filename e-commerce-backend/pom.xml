@@ -57,6 +57,29 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>bumpAndTag</id>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- mvn compile -PbumpAndTag -->
+						<groupId>com.demo</groupId>
+						<artifactId>mvn-version-bumping-plugin</artifactId>
+						<version>1.0.0</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>bumpAndTag</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
