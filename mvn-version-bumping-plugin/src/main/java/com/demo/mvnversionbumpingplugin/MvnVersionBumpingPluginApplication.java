@@ -12,20 +12,32 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.Optional;
+
 @Mojo(name = "bumpAndTag", defaultPhase = LifecyclePhase.COMPILE)
 @SpringBootApplication
 @Slf4j
 public class MvnVersionBumpingPluginApplication extends AbstractMojo {
 
-	@Parameter(defaultValue = "${project}", required = true, readonly = true)
-	private MavenProject mavenProject;
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    private MavenProject mavenProject;
 
-	public static void main(String[] args) {
-		SpringApplication.run(MvnVersionBumpingPluginApplication.class, args);
-	}
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        log.info("Current version: {}", mavenProject.getVersion());
+        ConfigurableApplicationContext context = SpringApplication.run(MvnVersionBumpingPluginApplication.class);
+        VersionBumpingService versionBumpingService = context.getBean(VersionBumpingService.class);
 
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		log.info("{}", mavenProject.getVersion());
-	}
+        // Get bumped version else exit
+        Optional<String> bumpedVersion = versionBumpingService.getBumpedVersionIfPossible(mavenProject.getVersion());
+        if (bumpedVersion.isEmpty()) {
+            log.error("Exiting since Version: {} did not match with any of the known versioning patterns!",
+                    mavenProject.getVersion());
+            System.exit(1);
+        }
+
+        // Update version of repo
+        log.info("Updating version in repo to: {}", bumpedVersion.get());
+        context.close();
+    }
 }

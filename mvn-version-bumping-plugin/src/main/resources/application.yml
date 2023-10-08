@@ -2,3 +2,9 @@ logging:
   level:
     com:
       demo: DEBUG
+
+version:
+  bumpMajor: true
+  bumpMinor: true
+  bumpPatch: true
+  suffix: 'prod'

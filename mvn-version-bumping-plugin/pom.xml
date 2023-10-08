@@ -25,6 +25,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run -->
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<!-- Contains necessary classes and interfaces to create our Mojo -->
@@ -46,7 +53,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
