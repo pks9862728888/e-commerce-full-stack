@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/moviebookingsystemdb?createDatabaseIfNotExist=true'
+    username: 'appuser'
+    password: 'secretpass'
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      default_schema: movies_core
+
+logging:
+  level:
+    web: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
